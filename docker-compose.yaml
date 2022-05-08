@@ -4,6 +4,7 @@ services:
   yslinear-node:
     build: ./yslinear-node-covid19
     environment:
+      - TZ=Asia/Taipei
       - NODE_ENV=production
     volumes:
       - yslinear-node-data:/usr/src/app
@@ -17,6 +18,7 @@ services:
   hakkies-node:
     build: ./hakkies-node-covid19
     environment:
+      - TZ=Asia/Taipei
       - NODE_ENV=production
     volumes:
       - hakkies-node-data:/usr/src/app
@@ -37,12 +39,15 @@ services:
       - "db"
     networks:
       - backend
+    environment:
+      - TZ=Asia/Taipei
     volumes:
       - go-data:/app
   db:
     image: postgres:14.2-alpine
     restart: always
     environment:
+      TZ: "Asia/Taipei"
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -61,6 +66,7 @@ services:
     depends_on:
       - "db"
     environment:
+      TZ: "Asia/Taipei"
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PGADMIN_LISTEN_PORT: 80
