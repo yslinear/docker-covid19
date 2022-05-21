@@ -1,39 +1,27 @@
 version: '3'
 
 services:
-  yslinear-node:
-    build: ./yslinear-node-covid19
+  node:
+    build: ./node-covid19
     environment:
       - TZ=Asia/Taipei
       - NODE_ENV=production
     volumes:
-      - yslinear-node-data:/usr/src/app
+      - node-data:/usr/src/app
     ports:
-      - "8084:8080"
+      - "8091:8080"
+    restart: unless-stopped
     depends_on:
       - "go"
     networks:
       - frontend
       - backend
-  hakkies-node:
-    build: ./hakkies-node-covid19
-    environment:
-      - TZ=Asia/Taipei
-      - NODE_ENV=production
-    volumes:
-      - hakkies-node-data:/usr/src/app
-    ports:
-      - "8083:8080"
-    depends_on:
-      - "go"
-    networks:
-      - frontend
   go:
     build: ./go-covid19
     expose:
       - 8082
     ports:
-      - "8082:8082"
+      - "8092:8082"
     restart: unless-stopped
     depends_on:
       - "db"
@@ -71,7 +59,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PGADMIN_LISTEN_PORT: 80
     ports:
-      - "8081:80"
+      - "8093:80"
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     links:
@@ -79,8 +67,7 @@ services:
     networks:
       - backend
 volumes:
-    yslinear-node-data:
-    hakkies-node-data:
+    node-data:
     go-data:
     db-data:
     pgadmin-data:
