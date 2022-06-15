@@ -33,7 +33,7 @@ services:
       - go-data:/app
   db:
     image: postgres:14.2-alpine
-    restart: always
+    restart: unless-stopped
     environment:
       TZ: "Asia/Taipei"
       POSTGRES_DB: postgres
@@ -50,7 +50,7 @@ services:
       - backend
   pgadmin:
     image: dpage/pgadmin4:latest
-    restart: always
+    restart: unless-stopped
     depends_on:
       - "db"
     environment:
