@@ -25,6 +25,7 @@ services:
     restart: unless-stopped
     depends_on:
       - "db"
+      - "redis"
     networks:
       - backend
     environment:
@@ -66,11 +67,22 @@ services:
       - "db:pgsql-server"
     networks:
       - backend
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    command: redis-server --maxmemory 512mb --maxmemory-policy allkeys-lru
+    expose:
+      - 6379
+    volumes:
+      - redis-data:/data
+    networks:
+      - backend
 volumes:
     node-data:
     go-data:
     db-data:
     pgadmin-data:
+    redis-data:
 
 networks:
   frontend:
